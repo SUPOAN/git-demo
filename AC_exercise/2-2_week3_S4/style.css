@@ -1,0 +1,141 @@
+#cards {
+  /* 橫軸- row */
+  display: flex;
+  /* 換行 */
+  flex-wrap: wrap;
+  width: 85%; /* 新增：寬度和標頭一致 */
+  margin: 0 auto;/* 新增：置中 */
+}
+
+.card {
+  /* 卡片在容器裡的排版，想要四排各13張*/
+
+  /* 假設共100%，100/13張牌 = 7.xxx */
+  /* flex: flex-basis, flex-grow, flex-shrink */
+  /* flex-basis: 卡片所佔的比例 寬度，flex-grow: 如果有剩餘的空間要不要填滿，flex-shrink: 要不要收縮，通常填1*/
+  flex: 7% 1 1;
+  /* vw是相對單位，100vw是100%視窗大小，8vw就是8%的視窗大小，目的是要讓高度維持一定的比例 */
+  height: 8vw; 
+  border: 2px solid #e0e0e0;
+  /* 卡片之間有間距 */
+  margin: 2px;
+  box-sizing: border-box;
+  /* 卡片內部元素的排版 */
+  display: flex;
+  /* main axis */
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.card img {
+  /* 圖片本身太大，必須限制 */
+  max-width: 30%;
+  /* 排交叉軸的位置，目前主軸是column，所以align-self設定center就會依據交叉的row置中 */
+  align-self: center;
+}
+
+.card p {
+  /* 文字超出範圍，始於瀏覽器預設的margin，必須給定數字 */
+  margin: 3px;
+  font-size: 10px;
+}
+
+
+/* 指定哪個<p>要做動作 */
+.card p:last-child {
+  /* 內容做rotate */
+  transform: rotate(180deg);
+}
+
+.back {
+  background: url('https://assets-lighthouse.alphacamp.co/uploads/image/file/9222/ExportedContentImage_00.png');
+  /* 用cover調整背景圖片包在卡片裡面 */
+  background-size: cover;
+  
+}
+
+.paired {
+  background-color: #dae0e3;
+}
+
+
+#header {
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  /* main axis: column */ 
+  align-items: flex-end;
+  width: 85%;
+}
+
+#header .title {
+  width: 100%;
+  display: flex;
+  /* main axis: row */
+  justify-content: flex-end;
+}
+
+#header .title img {
+  max-width: 3em;
+}
+
+#header .title h2 {
+  padding-left: 0.5em;
+}
+
+#header .score {
+  margin: 0;
+  color: #6c90ac;
+}
+
+#header .tried {
+  margin-top: 0;
+}
+
+
+/* 利用.wrong搭配@keyframes製作動畫 */
+.wrong {
+  /* 持續0.2秒 */
+  animation: wrongAnimation 0.2s;
+  /* 重複5次 */
+  animation-iteration-count: 5;
+}
+
+@keyframes wrongAnimation {
+
+  to {
+    border: 2px solid #f1c232;
+  }
+}
+
+
+
+.completed {
+  display: flex;
+  justify-content: space-around;
+  position: absolute;
+  z-index: 999;
+  top: 33vh;
+  background-color: RGBA(143, 228, 218, 0.8);
+  width: 100vw;
+  padding: 50px 0;
+}
+
+.completed div p {
+  font-size: 1.5em;
+  color: black;
+  text-align: center;
+  margin: 0;
+}
+
+.completed div p:first-child {
+  font-size: 3em;
+  font-weight: 700;
+  color: #758d9a;
+}
+
+.completed img {
+  width: 5vw;
+  height: 10vh;
+  padding: 50px;
+}

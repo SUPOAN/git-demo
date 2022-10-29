@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <!-- 引用Bootstrap的CSS檔案 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+</head>
+<!-- 直接載入Bootstrap的Nav樣式，刪減掉不用的標籤，保留想要的，例如Home、link..等，再去改字樣即可 -->
+<!-- Navbar -->
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Movie List</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Favorite</a>
+          </li>
+      </div>
+    </div>
+  </nav>
+
+  <!-- margin-top -->
+  <!-- 在navbar下面必須寫出一個div container，class可以直接導入Bootstrap的mt-5 CSS樣式，等於margin top 5，如此就不用自己寫CSS -->
+
+  <div class="container mt-5">
+    <!-- 利用div row 的方式把input區跟電影清單區分兩個區塊-->
+    <div class="row">
+      <!-- Search Bar -->
+      <!--一樣貼上Bootstrap的Forms>layout>inline form，必須自己去改placeholder字樣、id方便好搜尋...等微調。  -->
+
+      <!-- 在form內新增id="search-form"，讓JS可以按裝監聽器 -->
+      <form class="row row-cols-lg-auto g-3 align-items-center" id="search-form">
+        <div class="col-12">
+          <!-- visually-hidden是screen reader only的意思，是Bootstrap為了提升網頁可用性打造的屬性，原封不動保留即可。 -->
+          <label class="visually-hidden" for="inlineFormInputGroupUsername">Search Keyword</label>
+          <input type="text" class="form-control" id="search-input" placeholder="Keyword">
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary" id="search-submit">Search</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="row" id="data-panel">
+      <!-- Render Movie List -->
+      <!-- 先製作兩個div class -->
+      <!-- col-sm-3 可以套用限縮圖片的大小，套用數字觀察設計稿一列(row)有4個海報，bootstrap一列是12個單位，col-sm-3可以滿足4個海報，3*4=12-->
+
+
+      <div class="col-sm-3">
+        <div class="mb-2">=
+          <!-- 貼上Bootstrap複製Cards樣式 -->
+          <div class="card">
+            <img
+              src="https://raw.githubusercontent.com/ALPHACamp/movie-list-api/master/public/posters/80PWnSTkygi3QWWmJ3hrAwqvLnO.jpg"
+              class="card-img-top" alt="Movie Poster">
+            <div class="card-body">
+              <h5 class="card-title">Movie title</h5>
+            </div>
+            <!-- 新增footer -->
+            <div class="card-footer">
+              <!-- 做出兩個button，class賦予bootstrap格式外也賦予自訂名稱btn-show-movie，這裡不用id賦予，因為每個電影的button都想選到 -->
+              <!-- 為了製作出modal特效，在button裡面導入bootstrap的data-bs-toggle="modal"和
+                data-bs-target="#movie-modal" ，此#id命名會影響後面是否能打開Modal，id要一致-->
+              <button class="btn btn-primary btn-show-movie" data-bs-toggle="modal"
+                data-bs-target="#movie-modal">More</button>
+              <button class="btn btn-infvo btn-add-favorite">+</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+  <!-- 分頁器去bootstrap的pagination複製-->
+  <nav aria-label="Page navigation">
+    <!-- 在ul加入justify-content-center，也是bootstrap的一種helper class，再賦予id="paginator"，之後抓取用 -->
+    <ul class="pagination justify-content-center" id="paginator">
+      <!-- <li class="page-item"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+    </ul>
+  </nav>
+
+  <!-- Movie Modal ，一樣複製bootstrap的modal HTML貼進來-->
+  <!-- 此div的id要和上方button內的data-bs-target="#movie-modal"一致！！！很重要！！！ -->
+  <div class="modal fade" id="movie-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- 把id改成movie-modal-title -->
+          <h1 class="modal-title fs-5" id="movie-modal-title">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- id設為movie-modal-body -->
+        <div class="modal-body" id="movie-modal-body">
+          <!-- 再創一個div row區塊，將圖片跟文字敘述分開 -->
+          <div class="row">
+            <!-- 目測圖片跟文字比例是2:1，設定class屬性col-sm-8:4 (共12份) -->
+            <!-- 圖 -->
+            <div class="col-sm-8" id="movie-modal-image">
+              <img
+                src="https://raw.githubusercontent.com/ALPHACamp/movie-list-api/master/public/posters/80PWnSTkygi3QWWmJ3hrAwqvLnO.jpg"
+                class="img-fluid" alt="movie-poster">
+            </div>
+            <!-- 文字 -->
+            <div class="col sm-4">
+              <!-- em是強調，會變成斜體字 -->
+              <p><em id="movie-modal-date">release date: 2020/01.05</em></p>
+              <p id="movie-modal-description">This is a movie</p>
+            </div>
+          </div>
+        </div>
+        <!-- footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!-- 必須先引用axios，後面再載入JS-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.27.2/axios.min.js"></script>
+  <script src="https://unpkg.com/axios@1.0.0/dist/axios.min.js"></script>
+
+  <!-- 載入Bootstrap提供的JS檔案，要放在body後端 -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8"
+    crossorigin="anonymous"></script>
+
+  <!-- 再掛入JS -->
+  <script src="./main.js"></script>
+
+
+</body>
+
+
+</html>
